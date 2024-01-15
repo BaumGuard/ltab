@@ -139,6 +139,24 @@ int main (int argc, char** argv) {
         }
     }
 
+    if (params.xs < 0 || params.xs >= params.divisor) {
+        fprintf(stderr, "\033[31mError:\033[0m -xs: \033[31mNumber out of range!\033[0m\nEnter a number between 0 and divisor-1\n");
+        return 1;
+    }
+    if (params.xe < 0 || params.xe >= params.divisor) {
+        fprintf(stderr, "\033[31mError:\033[0m -xe: \033[31mNumber out of range!\033[0m\nEnter a number between 0 and divisor-1\n");
+        return 1;
+    }
+    if (params.ys < 0 || params.ys >= params.divisor) {
+        fprintf(stderr, "\033[31mError:\033[0m -ys: \033[31mNumber out of range!\033[0m\nEnter a number between 0 and divisor-1\n");
+        return 1;
+    }
+    if (params.ye < 0 || params.ye >= params.divisor) {
+        fprintf(stderr, "\033[31mError:\033[0m -ye: \033[31mNumber out of range!\033[0m\nEnter a number between 0 and divisor-1\n");
+        return 1;
+    }
+
+
     if (params.divisor > 0) {
         if (params.xe == 0)
             params.xe = params.divisor-1;
