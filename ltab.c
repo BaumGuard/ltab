@@ -35,6 +35,17 @@ bool contains_number (int* arr, int n) {
 }
 
 
+size_t power(size_t base, size_t exp) {
+    size_t res = 1;
+
+    for (size_t i=0; i<exp; i++) {
+        res *= base;
+    }
+
+    return res;
+}
+
+
 void printArr(int** arr, int size, char op, int xs, int xe, int ys, int ye) {
 
     int n_length = (int) log10(size-1)+1;
@@ -46,8 +57,10 @@ void printArr(int** arr, int size, char op, int xs, int xe, int ys, int ye) {
     // Printing operator
     if (op == 'm')
         printf("* | ");
-    else
+    else if (op == 'a')
         printf("+ | ");
+    else if (op == 'p')
+        printf("^ | ");
 
     // Printing horizontal numbering
     for (int a=xs; a<=xe; a++)
@@ -129,6 +142,8 @@ int main (int argc, char** argv) {
         }
         else if (strcmp(argv[i], "m") == 0)
             params.op = 'm';
+        else if (strcmp(argv[i], "a") == 0)
+            params.op = 'a';
         else if (strcmp(argv[i], "p") == 0)
             params.op = 'p';
         else if (check_number(argv[i]))
@@ -147,8 +162,8 @@ int main (int argc, char** argv) {
             params.xe = params.divisor-1;
         if (params.ye == 0)
             params.ye = params.divisor-1;
-        if (params.op != 'p' && params.op != 'm') {
-            fprintf(stderr, "\033[31mError: Operator missing\033[0m - Valid Operators: m (multiplication), p (addition)\n");
+        if (params.op != 'p' && params.op != 'm' && params.op != 'a') {
+            fprintf(stderr, "\033[31mError: Operator missing\033[0m - Valid Operators: m (multiplication), a (addition), p (potentiate)\n");
             return 1;
         }
     }
@@ -176,23 +191,28 @@ int main (int argc, char** argv) {
         return 1;
     }
 
+    if (params.op == 'p' && params.divisor > 16) {
+        fprintf(stderr, "\033[31mError: Overflow\033[0m - Enter a number between 0 and 16\n");
+        return 1;
+    }
 
-    int n = (int) atoi(argv[1]); // Modulo divisor
 
     // Allocating memory for linking table
-    int** table = (int**)malloc(n*sizeof(int*));
-    for (int a=0; a<n; a++)
-        table[a] = (int*)malloc(n*sizeof(int));
+    int** table = (int**)malloc(params.divisor*sizeof(int*));
+    for (int a=0; a<params.divisor; a++)
+        table[a] = (int*)malloc(params.divisor*sizeof(int));
 
-    for (int a=0; a<n; a++) {
-        for (int b=0; b<n; b++) {
+    for (int a=0; a<params.divisor; a++) {
+        for (int b=0; b<params.divisor; b++) {
             switch (params.op) {
                 case 'm':
-                    table[a][b] = (a*b) % n;
+                    table[a][b] = (a*b) % params.divisor;
+                    break;
+                case 'a':
+                    table[a][b] = (a+b) % params.divisor;
                     break;
                 case 'p':
-                    table[a][b] = (a+b) % n;
-                    break;
+                    table[a][b] = (int)(power(a, b) % params.divisor);
             }
         }
     }
@@ -259,11 +279,43 @@ int main (int argc, char** argv) {
     if (units[units_it] != 0 && abs(units[units_it]) < params.divisor)
         printf("%d", units[units_it]);
 
-    printf("\n\n", units[units_it]);
+    printf("\n", units[units_it]);
 
 
     if (zero_dividers[0] == 0)
         printf("Is integrity ring\n\n");
+
+
+    if (params.op == 'p') {
+        int nilpotent[params.divisor-1];
+        int np_it = 0;
+
+        for (int a=1; a<params.divisor; a++) {
+            for (int b=1; b<params.divisor; b++) {
+                if (table[a][b] == 0 && !contains_number(nilpotent, a)) {
+                    nilpotent[np_it++] = a;
+                }
+            }
+        }
+
+        np_it = 0;
+
+        printf("Nilpotent:      ");
+
+
+        while (nilpotent[np_it+1] != 0 && abs(nilpotent[np_it+1]) < params.divisor) {
+            if (nilpotent[np_it] < params.divisor)
+                printf("%d, ", nilpotent[np_it]);
+            np_it++;
+        }
+
+
+        if (nilpotent[np_it] != 0 && abs(nilpotent[np_it]) < params.divisor)
+            printf("%d", nilpotent[np_it]);
+
+        printf("\n");
+
+    }
 
 
     // Freeing linking table
