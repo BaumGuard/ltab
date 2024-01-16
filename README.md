@@ -2,7 +2,7 @@
 Displaying linking table (discrete maths) in the terminal
 
 # Description
-`ltab` displays the linking table of a given size in the terminal window. It supports **multiplication** and **addition**
+`ltab` displays the linking table of a given size in the terminal window. It supports **multiplication**, **addition** and **power**
 
 # Compiling
 Compile:
@@ -13,7 +13,7 @@ make
 # Usage
 ## Syntax
 ```
-ltab <divider> <m|p> [ -xs <number> | -xe <number> | -ys <number> | -ye <number> ]
+ltab <divider> <m|a|p> [ -xs <number> | -xe <number> | -ys <number> | -ye <number> ]
 ```
 
 ## Arguments
@@ -24,11 +24,12 @@ ltab <divider> <m|p> [ -xs <number> | -xe <number> | -ys <number> | -ye <number>
     <td>Size of the linking table (divisor)</td>
   </tr>
   <tr>
-    <td><code>&lt;m|p&gt;</code></td>
+    <td><code>&lt;m|a|p&gt;</code></td>
     <td><b>Operator</b><br>
       <ul>
         <li><b>m</b>: Multiplication</li>
-        <li><b>p</b>: Addition</li>
+        <li><b>a</b>: Addition</li>
+        <li><b>p</b>: Power</li>
       </ul>
     </td>
   </tr>
