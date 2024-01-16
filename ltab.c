@@ -163,7 +163,7 @@ int main (int argc, char** argv) {
         if (params.ye == 0)
             params.ye = params.divisor-1;
         if (params.op != 'p' && params.op != 'm' && params.op != 'a') {
-            fprintf(stderr, "\033[31mError: Operator missing\033[0m - Valid Operators: m (multiplication), a (addition), p (potentiate)\n");
+            fprintf(stderr, "\033[31mError: Operator missing\033[0m - Valid Operators: m (multiplication), a (addition), p (power)\n");
             return 1;
         }
     }
