@@ -319,7 +319,7 @@ int main (int argc, char** argv) {
 
 
     // Freeing linking table
-    for (int i=0; i<n; i++)
+    for (int i=0; i<params.divisor; i++)
         free(table[i]);
     free(table);
 
