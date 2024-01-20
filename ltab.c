@@ -279,7 +279,7 @@ int main (int argc, char** argv) {
     if (units[units_it] != 0 && abs(units[units_it]) < params.divisor)
         printf("%d", units[units_it]);
 
-    printf("\n", units[units_it]);
+    printf("\n");
 
 
     if (zero_dividers[0] == 0)
